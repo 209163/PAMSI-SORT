@@ -1,13 +1,41 @@
-#include "tablica.hh"
-void tablica::push(int dana)
+/*
+ * tablicatest.cpp
+ *
+ *  Created on: 14 kwi 2016
+ *      Author: paula
+ */
+
+#include "tablicatest.h"
+#include <string>
+using namespace std;
+
+tablicatest::tablicatest() {
+	tab=new int[rozmiar];
+	rozmiar=10;
+	ile_elem=0;
+
+}
+
+tablicatest::tablicatest(int n) {
+	tab=new int[rozmiar];
+	rozmiar=n;
+	ile_elem=0;
+
+}
+
+tablicatest::~tablicatest() {
+
+}
+
+void tablicatest::push(int dana)
 {
   if(ile_elem<size())
-    this->tab[ile_elem]=dana;//dopisuje dana na pierwsze wolne miejsce tablicy 
+    this->tab[ile_elem]=dana;//dopisuje dana na pierwsze wolne miejsce tablicy
   else
     zwieksz(dana);
   this->ile_elem++; //nalicza ilosc zapisanych danych
 }
-void tablica::zwieksz(int dana)
+void tablicatest::zwieksz(int dana)
 {
   //std::cout<<"zwiekszam "<<i<<std::endl;
   int p=rozmiar;     // zmienna pomocnicza, zapamietuje poprzedni rozmiar tab.
@@ -17,9 +45,9 @@ void tablica::zwieksz(int dana)
     tmp[j]=tab[j];   //kopiuje zawartosc tablicy
   delete[] tab;     //zwalnia tablice
   tmp[ile_elem]=dana;     //dopisuje dana na pierwsze wolne miejsce tablicy
-  this->tab=tmp;  //przypisuje tablice tymczasowowa do tablicy orginalnej 
+  this->tab=tmp;  //przypisuje tablice tymczasowowa do tablicy orginalnej
 }
-void tablica::przypisz(int dana, int miejsce)
+void tablicatest::przypisz(int dana, int miejsce)
 {
   if(miejsce==ile_elem)
     this->tab[miejsce]=dana;
@@ -32,7 +60,7 @@ void tablica::przypisz(int dana, int miejsce)
       tab[miejsce]=dana;
     }
 }
-void tablica::zdejmij(int index)
+void tablicatest::zdejmij(int index)
 {
   if(index==ind())
     {
@@ -49,16 +77,16 @@ void tablica::zdejmij(int index)
   if (ile_elem<size()/3)
     zmniejsz();
 }
-void tablica::zmniejsz()
+void tablicatest::zmniejsz()
 {
   this->rozmiar=rozmiar/2;       // nowy rozmiar tablicy
   int *tmp= new int[rozmiar];   //tworzy tablice tymczasowa
   for(int j=0; j<ile_elem; j++)
     tmp[j]=tab[j];   //kopiuje zawartosc tablicy
   delete[] tab;     //zwalnia pamiec
-  this->tab=tmp;  //przypisuje tablice tymczasowowa do tablicy orginalnej 
+  this->tab=tmp;  //przypisuje tablice tymczasowowa do tablicy orginalnej
 }
-void tablica::bubblesort()
+void tablicatest::bubblesort()
 {
   int tmp;
   for(int i=0; i< ind(); i++)
@@ -76,20 +104,19 @@ void tablica::bubblesort()
 }
 void tablicatest::run()
 {
-  stoper s;
-  std::string dane="tablica";
-  for(int j=0; j<ileOkrazen; j++)
+  //stoper s;
+  string dane="tablica";
+  for(int j=0; j<getIleOkrazen(); j++)
     {
-      for(int i=10; i<ileDanych; i=i*10)
+      for(int i=10; i<getIleDanych(); i=i*10)
 	{
-	  s.start();
-	  for(int i=0;i<=ile_el; i++)
+	  //s.start();
+	  for(int i=0;i<=ile_elem; i++)
 	    push(i);
-	  s.stop();
+	  //s.stop();
 	  //std::cout<<s.getTime()<<std::endl;
 	  //  s.getElapsedTime();
-	  s.dumpToFile(dane);
+	  //s.dumpToFile(dane);
 	}
     }
 }
-

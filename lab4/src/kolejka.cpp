@@ -1,4 +1,11 @@
-#include "kolejka.hh"
+/*
+ * kolejka.cpp
+ *
+ *  Created on: 14 kwi 2016
+ *      Author: paula
+ */
+
+#include "kolejka.h"
 
 void kolejka::add(int x)
 {
@@ -23,5 +30,5 @@ int kolejka::last()
   if(isEmpty()==true)
     throw empty();
   else
-    return wyswietl(ind()); 
+    return wyswietl(ind());
 }

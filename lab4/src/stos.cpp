@@ -1,4 +1,21 @@
-#include "stos.hh"
+/*
+ * stos.cpp
+ *
+ *  Created on: 14 kwi 2016
+ *      Author: paula
+ */
+
+#include "stos.h"
+
+stos::stos() {
+	// TODO Auto-generated constructor stub
+
+}
+
+stos::~stos() {
+	// TODO Auto-generated destructor stub
+}
+
 
 void stos::add(int x)
 {
@@ -18,7 +35,7 @@ int stos::get()
   if(isEmpty()==true)
     throw empty();
   else
-    return wyswietl(ind()); 
+    return wyswietl(ind());
 }
 /*
 stos::stos(){*NEXT=NULL; ile_elem=0;}
@@ -43,7 +60,7 @@ void stos::remove()
     stos *tmp=this;
     this=this.NEXT;
     delete tmp;
-    
-    
+
+
   }*/
 

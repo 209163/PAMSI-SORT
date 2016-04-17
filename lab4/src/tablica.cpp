@@ -1,8 +1,29 @@
-#include "tablica.hh"
+/*
+ * tablica.cpp
+ *
+ *  Created on: 14 kwi 2016
+ *      Author: paula
+ */
+
+#include "tablica.h"
+
+tablica::tablica(int n)
+{
+	tab=new int[rozmiar];
+	rozmiar=n;
+	ile_elem=0;
+}
+
+tablica::tablica()
+{
+	tab=new int[rozmiar];
+	rozmiar=10;
+	ile_elem=0;
+}
 void tablica::push(int dana)
 {
   if(ile_elem<size())
-    this->tab[ile_elem]=dana;//dopisuje dana na pierwsze wolne miejsce tablicy 
+    this->tab[ile_elem]=dana;//dopisuje dana na pierwsze wolne miejsce tablicy
   else
     zwieksz(dana);
   this->ile_elem++; //nalicza ilosc zapisanych danych
@@ -17,7 +38,7 @@ void tablica::zwieksz(int dana)
     tmp[j]=tab[j];   //kopiuje zawartosc tablicy
   delete[] tab;     //zwalnia tablice
   tmp[ile_elem]=dana;     //dopisuje dana na pierwsze wolne miejsce tablicy
-  this->tab=tmp;  //przypisuje tablice tymczasowowa do tablicy orginalnej 
+  this->tab=tmp;  //przypisuje tablice tymczasowowa do tablicy orginalnej
 }
 void tablica::przypisz(int dana, int miejsce)
 {
@@ -56,7 +77,7 @@ void tablica::zmniejsz()
   for(int j=0; j<ile_elem; j++)
     tmp[j]=tab[j];   //kopiuje zawartosc tablicy
   delete[] tab;     //zwalnia pamiec
-  this->tab=tmp;  //przypisuje tablice tymczasowowa do tablicy orginalnej 
+  this->tab=tmp;  //przypisuje tablice tymczasowowa do tablicy orginalnej
 }
 void tablica::bubblesort()
 {
