@@ -14,12 +14,13 @@
 #include "sort.h"
 #include "StrListyT.h"
 #include "QSTest.h"
+#include "MSTest.h"
 using namespace std;
 
 int main()
 {
 
-	QSTest<int> test;
+	MSTest<int> test;
 	test.run();
 
 	return 0;

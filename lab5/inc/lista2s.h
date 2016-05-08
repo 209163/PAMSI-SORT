@@ -6,6 +6,8 @@
 #define LISTA2s_HH
 #include "inLista.h"
 #include "StrListyT.h"
+#include <iostream>
+using namespace std;
 template <class typ> class lista2s
 {
 protected:
@@ -28,18 +30,208 @@ public:
   StrListyT<typ> getFirst();
   StrListyT<typ> getLast();
   void quicksort(StrListyT<typ> *pLeft, StrListyT<typ> *pRight);
+  void quicksortAlg(StrListyT<typ> *start, StrListyT<typ> *end);
+  void quicksort(StrListyT<typ> *start);
+  StrListyT<typ> *partition(StrListyT<typ> *start, StrListyT<typ> *end);
+  void mergesort(StrListyT<typ> **firstRef);
+  StrListyT<typ>* sortedmerge(StrListyT<typ>* a, StrListyT<typ>* b);
+  void split(StrListyT<typ>* source, StrListyT<typ>** frontRef, StrListyT<typ>** backRef);
+  void swap(int* a, int* b);
+  StrListyT<typ> *lastNode(StrListyT<typ> *root);
   class bad_index{};
   class empty{};
 };
+
 //-------------------------------------------------//
-//template <class typ>
-//lista2s<typ>::lista2s<typ>(){FIRST=NULL; rozmiar=0;}
-//-------------------------------------------------//
+
 template <class typ>
 lista2s<typ>::~lista2s()
 {
 
 }
+
+/**
+ * zamienia dwa elementy
+ * @param a
+ * @param b
+ */
+template <class typ>
+void lista2s<typ>::swap(int* a, int* b)
+{
+	int tmp=*a;
+	*a=*b;
+	*b=tmp;
+}
+
+/**
+ * odnajduje  ostatni wezel w dwukierunkowej liscie
+ * @param root
+ * @return zwraca ostatni wezel
+ */
+template <class typ>
+StrListyT<typ> *lista2s<typ>::lastNode(StrListyT<typ> *root)
+{
+	while (root && root->NEXT)
+	{
+		root=root->NEXT;
+	}
+	return root;
+}
+
+/**
+ * odnajduje ostatni wezel oraz wywoluje quicksortAlg()
+ * @param start
+ */
+template <class typ>
+void lista2s<typ>::quicksort(StrListyT<typ> *start)
+{
+	StrListyT<typ> *last = lastNode(start);
+	quicksortAlg(start, last);
+}
+
+
+
+/**
+ * glowne zalozenie dzialania algorytmu quicksort
+ * @param start
+ * @param end
+ */
+template <class typ>
+void lista2s<typ>::quicksortAlg(StrListyT<typ> *start, StrListyT<typ> *end)
+{
+	//if(start=>end) return;
+	if( end!=NULL && start != end && start != end->NEXT)
+	{
+		//zwraca wskaznik do pivota po sortowaniu
+		StrListyT<typ> *pivotPointer = partition(start, end);
+		quicksortAlg(start, pivotPointer->PREV);
+		quicksortAlg(pivotPointer->NEXT, end);
+	}
+
+}
+/**
+ * przerzuca na lewo wartosci mniejsze od pivota, a na prawo wieksze
+ * @param start pierwszy element listy
+ * @param end ostatni element listy
+ * @return
+ */
+template <class typ>
+StrListyT<typ> *lista2s<typ>::partition(StrListyT<typ> *start, StrListyT<typ> *end)
+{
+	//wybieram ostatni element na pivota
+	typ pivot = end->dana;
+	//i=start-1;
+	StrListyT<typ> *i = start->PREV;
+	//for (int j=start; j<=end-1; j++)
+	for (StrListyT<typ> *j=start; j !=end; j=j->NEXT)
+	{
+		if (j->dana <= pivot)
+		{
+			if(i==NULL) i=start;
+			else i=i->NEXT;
+			swap(&(i->dana), &(j->dana));
+		}
+	}
+	//wstawiam pivota w odpowiednie miejsce
+	if (i==NULL) i=start;
+	else i=i->NEXT;
+	swap(&(i->dana), &(end->dana));
+	return i;
+}
+
+/**
+ * funcka dzieli liste na 2 polowy - front i back.
+ * Jezeli tozmiary nie moga byc rowne to ten dodatkowy umieszczany jest we front
+ * @param source
+ * @param frontRef
+ * @param backRef
+ */
+template <class typ>
+void lista2s<typ>::split(StrListyT<typ>* source, StrListyT<typ>** frontRef, StrListyT<typ>** backRef)
+{
+	StrListyT<int> * fast;
+	StrListyT<int> * slow;
+	//lista pusta lub 1 elem
+	if(source==NULL || source->NEXT==NULL)
+	{
+		*frontRef=source;
+		*backRef=NULL;
+	}
+	else
+	{
+		slow = source;
+		fast=source->NEXT;
+
+		//zwiekszam fast o 2 wezly, slow o 1
+		while (fast!=NULL)
+		{
+			fast=fast->NEXT;
+			if(fast!=NULL)
+			{
+				slow=slow->NEXT;
+				fast=fast->NEXT;
+			}
+		}
+
+		/*
+		 * slow jest tuz przed srodkiem listy, ustawiam
+		 * poczatek jednaj listy na source, a drugiej na nastepny po slow
+		 */
+		*frontRef=source;
+		*backRef=slow->NEXT;
+		slow->NEXT=NULL;
+	}
+}
+
+template <class typ>
+StrListyT<typ>* lista2s<typ>::sortedmerge(StrListyT<typ>* a, StrListyT<typ>* b)
+{
+	StrListyT<int>* result = NULL;
+
+	if(a==NULL)
+	{
+		return b;
+	}
+	else if(b==NULL)
+	{
+		return a;
+	}
+
+	if(a->dana <= b->dana)
+	{
+		result = a;
+		result->NEXT = sortedmerge(a->NEXT,b);
+	}
+	else
+	{
+		result=b;
+		result->NEXT = sortedmerge(a,b->NEXT);
+	}
+
+	return result;
+}
+
+template <class typ>
+void lista2s<typ>::mergesort(StrListyT<typ> **headRef)
+{
+	StrListyT<int>* head = *headRef;
+	StrListyT<int>* a;
+	StrListyT<int>* b;
+	//jak pusta lub tylko 1 elem
+	if((head==NULL) || (head->NEXT==NULL)) return;
+
+	//podzial na 2 podlisty
+	split(head, &a, &b);
+
+	//sortuje podlisty
+	mergesort(&a);
+	mergesort(&b);
+
+	//scalam posortowane listy
+	*headRef = sortedmerge(a,b);
+}
+
+
 
 
 template <class typ>
@@ -202,59 +394,6 @@ int lista2s<typ>::find(typ x)
     }
 }
 
-template <class typ>
-void lista2s<typ>::quicksort(StrListyT<typ> *pLeft, StrListyT<typ> *pRight)
-{
-	StrListyT<int> *pStart;
-	StrListyT<int> *pCurrent;
-	int nTmp;
 
-	//jak prawy i lewy sa sobie rowne to koniec
-	if(pLeft == pRight) return;
-
-	pStart=pLeft;
-	pCurrent= pStart->NEXT;
-
-	while(1)
-	{
-		//sprawdzam czy element z lewej jest mniejszy niz z prawej
-		if (pStart->dana < pCurrent->dana)
-		{
-			//zamieniam ze soba elementy
-			nTmp=pCurrent->dana;
-			pCurrent->dana=pStart->dana;
-			pStart->dana=nTmp;
-		}
-		//sprawdzam czy prawy koniec osiagniety
-		if (pCurrent == pRight) break;
-
-		//przesuwam wskaznik na nastepny element
-		pCurrent = pCurrent->NEXT;
-	}
-	//zamieniam pierwszy i biezacy element
-	nTmp = pLeft->dana;
-	pLeft->dana = pCurrent->dana;
-	pCurrent->dana=nTmp;
-
-	//zapisuje biezacy element
-	StrListyT<int> *pOldCurrent = pCurrent;
-
-	//sprawdzam czy sortowac lewa strone
-	pCurrent = pCurrent->PREV;
-	if(pCurrent != NULL)
-	{
-		if ((pLeft->PREV != pCurrent) && (pCurrent->NEXT != pLeft))
-			quicksort(pLeft, pCurrent);
-	}
-
-	//sprawdzam czy sortowac prawa
-	pCurrent=pOldCurrent;
-	pCurrent = pCurrent->NEXT;
-	if(pCurrent != NULL)
-	{
-		if((pCurrent->PREV != pRight) && (pRight->NEXT != pCurrent))
-			quicksort(pCurrent, pRight);
-	}
-}
 
 #endif

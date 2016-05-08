@@ -45,8 +45,45 @@ void QSTest<typ>::run()
 		sizes.add(10000);
 		sizes.add(100000);
 		sizes.add(1000000);
-		sizes.add(1000000000);
+		sizes.add(10000000);
+		for(int k=0; k<10; k++)
+		{
+//cout<<"przypadek sredni:"<<endl;
+//for (int i=0; i<7;i++)
+//	{
+//		QSTest<int> test;
+//		stoper mea;
+//		//tworze tablice do posortowania
+//		for (int j=0; j<sizes.get(i); j++)
+//		{
+//			int l=sizes.get(i);
+//			int r=rand()%l+1;
+//			test.add(r);
+//		}
+//
+//		//wyswietlam ja
+////		for (int j=0;j<sizes.get(i);j++)
+////		{
+////			cout<<test.get(j)<<" ";
+////		}
+//	//cout<<endl;
+//		//sortowanie
+//		mea.setStart();
+//		test.quicksort(test.FIRST);
+//		mea.setStop();
+//		mea.getRunTime();
+//		mea.sendToFile(sizes.get(i));
+//		mea.displayRunTime(sizes.get(i));
+//
+//		//wyswietlam posortowana
+////		for (int j=0;j<sizes.get(i);j++)
+////			{
+////				cout<<test.get(j)<<" ";
+////			}
+////		cout<<endl;
+//	}
 
+cout<<"przypadek pesymistyczny:"<<endl;
 for (int i=0; i<6;i++)
 	{
 		QSTest<int> test;
@@ -54,11 +91,10 @@ for (int i=0; i<6;i++)
 		//tworze tablice do posortowania
 		for (int j=0; j<sizes.get(i); j++)
 		{
-			int r=rand()%10+1;
-			test.add(r);
+			test.add(j);
 		}
 
-		//wyswietlam ja
+//		//wyswietlam ja
 //		for (int j=0;j<sizes.get(i);j++)
 //		{
 //			cout<<test.get(j)<<" ";
@@ -66,20 +102,25 @@ for (int i=0; i<6;i++)
 	//cout<<endl;
 		//sortowanie
 		mea.setStart();
-		test.quicksort(test.FIRST, test.LAST);
+		test.quicksort(test.FIRST);
 		mea.setStop();
 		mea.getRunTime();
 		mea.sendToFile(sizes.get(i));
 		mea.displayRunTime(sizes.get(i));
 
-		//wyswietlam posortowana
+//		//wyswietlam posortowana
 //		for (int j=0;j<sizes.get(i);j++)
 //			{
 //				cout<<test.get(j)<<" ";
 //			}
 		//cout<<endl;
 	}
+}
 
 }
+
+
+
+
 
 #endif /* QSTEST_H_ */
